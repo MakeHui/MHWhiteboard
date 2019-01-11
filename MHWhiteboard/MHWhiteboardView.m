@@ -99,7 +99,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    UIGraphicsGetCurrentContext();
     for(MHPathModel *pathModel in _pathModelArray) {
         switch (pathModel.type) {
             case MHPathModelTypeLine:
