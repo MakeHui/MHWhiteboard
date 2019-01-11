@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Sto-qf-3MZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="7Eb-a5-5XD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ghm-Ak-EdV">
+                                <rect key="frame" x="8" y="599" width="359" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qOS-yX-stC">
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <state key="normal" title="color"/>
+                                        <connections>
+                                            <action selector="onOpenColorViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LIG-lJ-zcs"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PU4-cU-g2W">
+                                        <rect key="frame" x="90" y="0.0" width="89.5" height="30"/>
+                                        <state key="normal" title="width"/>
+                                        <connections>
+                                            <action selector="onOpenWidthViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="egc-mD-hSn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAd-TR-seY">
+                                        <rect key="frame" x="179.5" y="0.0" width="90" height="30"/>
+                                        <state key="normal" title="fgImage"/>
+                                        <connections>
+                                            <action selector="onSelectForegroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="loK-hW-1oU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ST-8m-egk">
+                                        <rect key="frame" x="269.5" y="0.0" width="89.5" height="30"/>
+                                        <state key="normal" title="bgImage"/>
+                                        <connections>
+                                            <action selector="onSelectBackgroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="K73-YW-EdV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jSU-ag-sQm">
+                                <rect key="frame" x="8" y="599" width="359" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W43-kD-S8V">
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="5">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Yn-kg-fgS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zGt-dU-J9P">
+                                        <rect key="frame" x="72" y="0.0" width="71.5" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="10">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WHR-As-I8k"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7k5-TN-0mV">
+                                        <rect key="frame" x="143.5" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="15">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5tk-1D-McR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3p-9h-uMr">
+                                        <rect key="frame" x="215.5" y="0.0" width="71.5" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="20">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VT4-zk-u4l"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jYK-YN-vfg">
+                                        <rect key="frame" x="287" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="back">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dMk-3F-rzu"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="lP0-y6-SPy">
+                                <rect key="frame" x="8" y="599" width="359" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2L0-xj-UaM">
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectColorTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0tF-4i-cPm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ajf-Ds-Yd6">
+                                        <rect key="frame" x="72" y="0.0" width="71.5" height="30"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectColorTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JD1-xU-6sL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFb-Gt-RTL">
+                                        <rect key="frame" x="143.5" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectColorTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QGx-Fd-jfo"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sw4-EE-ly1">
+                                        <rect key="frame" x="215.5" y="0.0" width="71.5" height="30"/>
+                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectColorTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pEs-j7-Urx"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NWc-fb-x5a">
+                                        <rect key="frame" x="287" y="0.0" width="72" height="30"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <state key="normal" title="back">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onSelectColorTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0oO-dZ-9Bx"/>
+                                            <action selector="onSelectWidthTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Uh1-Qo-pl0"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1v6-oP-t73">
+                                <rect key="frame" x="8" y="629" width="359" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOk-jN-cd0">
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <state key="normal" title="eraser"/>
+                                        <connections>
+                                            <action selector="onEraserTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mPr-vK-bbH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDa-T9-y2c">
+                                        <rect key="frame" x="90" y="0.0" width="89.5" height="30"/>
+                                        <state key="normal" title="undo"/>
+                                        <connections>
+                                            <action selector="onUndoTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RUn-3L-TLf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUl-v8-m1T">
+                                        <rect key="frame" x="179.5" y="0.0" width="90" height="30"/>
+                                        <state key="normal" title="clear"/>
+                                        <connections>
+                                            <action selector="onClearTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="alc-uG-Q0X"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Qw-Wp-Ezv" userLabel="clearBG">
+                                        <rect key="frame" x="269.5" y="0.0" width="89.5" height="30"/>
+                                        <state key="normal" title="clearBgImg"/>
+                                        <connections>
+                                            <action selector="onClearBackgroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ka1-K1-TYK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdN-gJ-d1f" customClass="MHWhiteboardView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="jSU-ag-sQm" firstAttribute="leading" secondItem="Ghm-Ak-EdV" secondAttribute="leading" id="0wu-wI-MKS"/>
+                            <constraint firstItem="mdN-gJ-d1f" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="1fl-ly-xzm"/>
+                            <constraint firstItem="jSU-ag-sQm" firstAttribute="trailing" secondItem="Ghm-Ak-EdV" secondAttribute="trailing" id="1kc-8q-nln"/>
+                            <constraint firstItem="lP0-y6-SPy" firstAttribute="bottom" secondItem="jSU-ag-sQm" secondAttribute="bottom" id="33a-YG-IHV"/>
+                            <constraint firstItem="lP0-y6-SPy" firstAttribute="trailing" secondItem="jSU-ag-sQm" secondAttribute="trailing" id="CmB-g4-v05"/>
+                            <constraint firstItem="lP0-y6-SPy" firstAttribute="leading" secondItem="jSU-ag-sQm" secondAttribute="leading" id="D0Y-qk-bZT"/>
+                            <constraint firstItem="jSU-ag-sQm" firstAttribute="bottom" secondItem="Ghm-Ak-EdV" secondAttribute="bottom" id="EDs-rf-iOb"/>
+                            <constraint firstItem="7Eb-a5-5XD" firstAttribute="top" secondItem="1v6-oP-t73" secondAttribute="bottom" constant="8" id="HcA-js-iey"/>
+                            <constraint firstItem="mdN-gJ-d1f" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="OsM-G8-e5a"/>
+                            <constraint firstItem="Ghm-Ak-EdV" firstAttribute="leading" secondItem="1v6-oP-t73" secondAttribute="leading" id="QJy-yc-6sH"/>
+                            <constraint firstItem="jSU-ag-sQm" firstAttribute="top" secondItem="Ghm-Ak-EdV" secondAttribute="top" id="XNv-CL-bnG"/>
+                            <constraint firstAttribute="trailing" secondItem="mdN-gJ-d1f" secondAttribute="trailing" id="dvT-7W-RxM"/>
+                            <constraint firstItem="Ghm-Ak-EdV" firstAttribute="trailing" secondItem="1v6-oP-t73" secondAttribute="trailing" id="id4-Ze-dIU"/>
+                            <constraint firstItem="lP0-y6-SPy" firstAttribute="top" secondItem="jSU-ag-sQm" secondAttribute="top" id="r5Y-3M-MBK"/>
+                            <constraint firstItem="1v6-oP-t73" firstAttribute="top" secondItem="Ghm-Ak-EdV" secondAttribute="bottom" id="rOa-6r-p1I"/>
+                            <constraint firstAttribute="trailing" secondItem="1v6-oP-t73" secondAttribute="trailing" constant="8" id="v13-JK-CK4"/>
+                            <constraint firstItem="Ghm-Ak-EdV" firstAttribute="top" secondItem="mdN-gJ-d1f" secondAttribute="bottom" constant="8" id="yc0-wH-guY"/>
+                            <constraint firstItem="1v6-oP-t73" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="zJ5-hu-XHq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="clearView" destination="1v6-oP-t73" id="LSE-nC-NPj"/>
+                        <outlet property="colorsView" destination="lP0-y6-SPy" id="AYz-G0-e2m"/>
+                        <outlet property="darwWidthView" destination="jSU-ag-sQm" id="Ryy-VN-MfZ"/>
+                        <outlet property="toolsView" destination="Ghm-Ak-EdV" id="klw-da-HKp"/>
+                        <outlet property="whiteboardView" destination="mdN-gJ-d1f" id="RlB-SC-sBo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="133.59999999999999" y="133.5832083958021"/>
+        </scene>
+    </scenes>
+</document>
