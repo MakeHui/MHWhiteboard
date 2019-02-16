@@ -10,23 +10,28 @@
 
 @implementation MHPathModel
 
-+ (instancetype)initWithType:(MHPathModelType)type path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color
++ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color
 {
     MHPathModel *pathModel = [MHPathModel new];
     
-    pathModel.type = type;
+    pathModel.action = action;
     pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
     pathModel.path.lineWidth = lineWidth;
     pathModel.color = color;
     
-    switch (type) {
-        case MHPathModelTypeLine:
+    switch (action) {
+        case MHPathModelActionLine:
         {
             pathModel.path.lineCapStyle = kCGLineCapRound;
             pathModel.path.lineJoinStyle = kCGLineJoinRound;
         }
             break;
-        case MHPathModelTypeImage:
+        case MHPathModelActionForegroundImage:
+        {
+            // pass...
+        }
+            break;
+        case MHPathModelActionBackgroundImage:
         {
             // pass...
         }
@@ -38,11 +43,11 @@
     return pathModel;
 }
 
-+ (instancetype)initWithType:(MHPathModelType)type image:(UIImage *)image drawInRect:(CGRect)rect
++ (instancetype)initWithAction:(MHPathModelAction)action image:(UIImage *)image drawInRect:(CGRect)rect
 {
     MHPathModel *pathModel = [MHPathModel new];
     
-    pathModel.type = type;
+    pathModel.action = action;
     pathModel.image = image;
     pathModel.drawImageRect = rect;
     
@@ -53,7 +58,6 @@
 
 @implementation MHWhiteboardView
 {
-    UIImage *_backgroundImage;
     CGMutablePathRef _currentPath;
     NSMutableArray<MHPathModel *> *_pathModelArray;
 }
@@ -88,37 +92,73 @@
 - (void)customInit
 {
     self.backgroundColor = [UIColor whiteColor];
-    self.pathModelType = MHPathModelTypeLine;
+    self.pathModelAction = MHPathModelActionLine;
     self.brushWidth = 5.0f;
     self.brushColor = [UIColor redColor];
     
     _pathModelArray = [NSMutableArray array];
 }
 
+- (void)addPathModelToArray:(MHPathModel *)pathModel
+{
+    for (int i = 0; i < _pathModelArray.count; ++i) {
+        if (_pathModelArray[i].action & MHPathModelActionUndo) {
+            [_pathModelArray removeObject:_pathModelArray[i]];
+        }
+    }
+    [_pathModelArray addObject:pathModel];
+}
+
 #pragma mark - Draw UI
 
 - (void)drawRect:(CGRect)rect
 {
-    for(MHPathModel *pathModel in _pathModelArray) {
-        switch (pathModel.type) {
-            case MHPathModelTypeLine:
-            {
-                [pathModel.color set];
-                [pathModel.path stroke];
-            }
-                break;
-            case MHPathModelTypeImage:
-            {
-                [pathModel.image drawInRect:self.bounds];
-            }
-                break;
-            default:
-                break;
+    for (MHPathModel *pathModel in _pathModelArray) {
+        if (pathModel.action & MHPathModelActionUndo) continue;
+        if (pathModel.action & MHPathModelActionBackgroundImage) {
+            [pathModel.image drawInRect:self.bounds];
+            break;
         }
     }
     
+    for(MHPathModel *pathModel in _pathModelArray) {
+        if (pathModel.action & MHPathModelActionUndo) continue;
+        
+        if (pathModel.action & MHPathModelActionLine) {
+            [pathModel.color set];
+            [pathModel.path stroke];
+        }
+//        else if (pathModel.action & MHPathModelActionStraightLine) {
+//
+//        }
+//        else if (pathModel.action & MHPathModelActionCircle) {
+//
+//        }
+//        else if (pathModel.action & MHPathModelActionRectangle) {
+//
+//        }
+//        else if (pathModel.action & MHPathModelActionRriangle) {
+//
+//        }
+        else if (pathModel.action & MHPathModelActionForegroundImage) {
+            [pathModel.image drawInRect:self.bounds];
+        }
+        else if (pathModel.action & MHPathModelActionBackgroundImage) {
+            // pass..
+        }
+//        else if (pathModel.action & MHPathModelActionText) {
+//
+//        }
+//        else if (pathModel.action & MHPathModelActionSmear) {
+//
+//        }
+//        else if (pathModel.action & MHPathModelActionMosaic) {
+//
+//        }
+    }
+
     if (_currentPath) {
-        MHPathModel *pathModel = [MHPathModel initWithType:self.pathModelType path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
+        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
         [pathModel.color set];
         [pathModel.path stroke];
     }
@@ -146,8 +186,8 @@
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    MHPathModel *pathModel = [MHPathModel initWithType:self.pathModelType path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
-    [_pathModelArray addObject:pathModel];
+    MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
+    [self addPathModelToArray:pathModel];
     
     CGPathRelease(_currentPath);
     _currentPath = nil;
@@ -159,31 +199,49 @@
 
 - (void)undo
 {
-    [_pathModelArray removeLastObject];
+    for (MHPathModel *pathModel in [_pathModelArray reverseObjectEnumerator]) {
+        if (! (pathModel.action & MHPathModelActionUndo)) {
+            pathModel.action |= MHPathModelActionUndo;
+            break;
+        }
+    }
+
+    [self setNeedsDisplay];
+}
+
+- (void)repeat
+{
+    for (MHPathModel *pathModel in _pathModelArray) {
+        if (pathModel.action & MHPathModelActionUndo) {
+            pathModel.action ^= MHPathModelActionUndo;
+            break;
+        }
+    }
     
     [self setNeedsDisplay];
 }
 
 - (void)clearAll
 {
-    [_pathModelArray removeAllObjects];
+    for (MHPathModel *pathModel in _pathModelArray) {
+        pathModel.action |= MHPathModelActionUndo;
+    }
     
     [self setNeedsDisplay];
 }
 
 - (void)clearBackgroundImage
 {
-    if (_backgroundImage) {
-        [_pathModelArray removeObjectAtIndex:0];
-        _backgroundImage = nil;
-        [self setNeedsDisplay];
-    }
+    if (! _pathModelArray.firstObject) return;
+    _pathModelArray.firstObject.action |= MHPathModelActionUndo;
+    
+    [self setNeedsDisplay];
 }
 
 - (void)setForegroundImage:(UIImage *)foregroundImage
 {
-    MHPathModel *pathModel = [MHPathModel initWithType:MHPathModelTypeImage image:foregroundImage drawInRect:self.bounds];
-    [_pathModelArray addObject:pathModel];
+    MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionForegroundImage image:foregroundImage drawInRect:self.bounds];
+    [self addPathModelToArray:pathModel];
     
     [self setNeedsDisplay];
 }
@@ -192,9 +250,8 @@
 {
     [self clearBackgroundImage];
     
-    _backgroundImage = backgroundImage;
-    MHPathModel *pathModel = [MHPathModel initWithType:MHPathModelTypeImage image:backgroundImage drawInRect:self.bounds];
-    [_pathModelArray insertObject:pathModel atIndex:0];
+    MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionBackgroundImage image:backgroundImage drawInRect:self.bounds];
+    [self addPathModelToArray:pathModel];
     
     [self setNeedsDisplay];
 }
