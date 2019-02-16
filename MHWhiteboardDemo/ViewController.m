@@ -47,12 +47,12 @@
 
 - (IBAction)onOpenColorViewTouchUpInside:(id)sender
 {
-    [self showToolsView:self.colorsView];
+    [self showView:self.colorsView];
 }
 
 - (IBAction)onOpenWidthViewTouchUpInside:(id)sender
 {
-    [self showToolsView:self.darwWidthView];
+    [self showView:self.darwWidthView];
 }
 
 - (IBAction)onSelectForegroundImageTouchUpInside:(id)sender
@@ -75,6 +75,11 @@
     [self.whiteboardView undo];
 }
 
+- (IBAction)onRepeatTouchUpInside:(id)sender
+{
+    [self.whiteboardView repeat];
+}
+
 - (IBAction)onClearTouchUpInside:(id)sender
 {
     [self.whiteboardView clearAll];
@@ -88,7 +93,7 @@
 - (IBAction)onSelectWidthTouchUpInside:(UIButton *)sender
 {
     if (sender.tag == 105) {
-        [self showToolsView:self.toolsView];
+        [self showView:self.toolsView];
     }
     else {
         self.whiteboardView.brushWidth = (sender.tag - 100) * 5;
@@ -98,10 +103,20 @@
 - (IBAction)onSelectColorTouchUpInside:(UIButton *)sender
 {
     if (sender.tag == 105) {
-        [self showToolsView:self.toolsView];
+        [self showView:self.toolsView];
     }
     else {
         self.whiteboardView.brushColor = sender.preferredFocusedView.backgroundColor;
+    }
+}
+
+- (IBAction)onToolsViewTouchUpInside:(UIButton *)sender
+{
+    if (sender.tag == 101) {
+        [self showView:self.toolsView];
+    }
+    else {
+        [self showView:self.clearView];
     }
 }
 
@@ -119,8 +134,9 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)showToolsView:(UIView *)view
+- (void)showView:(UIView *)view
 {
+    self.clearView.hidden = true;
     self.toolsView.hidden = true;
     self.colorsView.hidden = true;
     self.darwWidthView.hidden = true;
