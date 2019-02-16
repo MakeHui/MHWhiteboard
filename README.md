@@ -15,7 +15,7 @@ A simple whiteboard library, based on `UIView`. (一个简洁的白板库, 基�
 - [ ] smear (涂抹)
 - [ ] mosaic (马赛克)
 - [x] undo (撤销)
-- [ ] repeat (回撤)
+- [x] repeat (回撤)
 
 ## Requirements
 
@@ -55,9 +55,9 @@ MHWhiteboardView *whiteboardView = [[MHWhiteboardView alloc] initWithFrame:CGRec
 [whiteboardView setForegroundImage:[UIImage new]];	// 设置前景图片
 [whiteboardView setBackgroundImage:[UIImage new]];	// 设置背景图片
 [whiteboardView undo];	// 撤销
+[whiteboardView repeat]; // 回撤
 [whiteboardView clearBackgroundImage];	// 清除背景图片
 [whiteboardView clearAll];	// 清空白板
-
 ```
 
 ## License
