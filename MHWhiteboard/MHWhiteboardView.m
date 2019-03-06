@@ -94,6 +94,19 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
             pathModel.path.lineJoinStyle = kCGLineJoinRound;
         }
             break;
+        case MHPathModelActionRectangle:
+        {
+            NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
+            
+            CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
+            CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
+            
+            pathModel.path = [UIBezierPath bezierPathWithRect:CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y)];
+            pathModel.path.lineWidth = lineWidth;
+            pathModel.path.lineCapStyle = kCGLineCapRound;
+            pathModel.path.lineJoinStyle = kCGLineJoinRound;
+        }
+            break;
         case MHPathModelActionForegroundImage:
         {
             // pass...
@@ -193,7 +206,9 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         if (pathModel.action & MHPathModelActionUndo) continue;
         
         if (pathModel.action & MHPathModelActionLine ||
-            pathModel.action & MHPathModelActionStraightLine) {
+            pathModel.action & MHPathModelActionStraightLine ||
+            self.pathModelAction & MHPathModelActionCircle ||
+            self.pathModelAction & MHPathModelActionRectangle) {
             [pathModel.color set];
             [pathModel.path stroke];
         }
@@ -248,7 +263,8 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     CGPoint location = [touches.anyObject locationInView:self];
     
     if (self.pathModelAction & MHPathModelActionStraightLine ||
-        self.pathModelAction & MHPathModelActionCircle) {
+        self.pathModelAction & MHPathModelActionCircle ||
+        self.pathModelAction & MHPathModelActionRectangle) {
         CGPoint firstPoint = [[MHPathModel pathPointsWithCGPath:_currentPath] firstObject].CGPointValue;
         CGPathRelease(_currentPath);
         _currentPath = CGPathCreateMutable();

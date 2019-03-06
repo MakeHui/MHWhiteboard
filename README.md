@@ -5,10 +5,10 @@ A simple whiteboard library, based on `UIView`. (一个简洁的白板库, 基�
 ## Features
 
 - [x] line (线条)
-- [ ] straight line (直线)
-- [ ] circle (圆)
-- [ ] rectangle (矩形)
-- [ ] triangle (三角形)
+- [x] straight line (直线)
+- [x] circle (圆)
+- [x] rectangle (矩形)
+- [ ] polygon (正多边形)
 - [x] foreground image (前景图片)
 - [x] background image (背景图图片)
 - [ ] text (文字)
