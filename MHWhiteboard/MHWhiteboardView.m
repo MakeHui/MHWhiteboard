@@ -124,13 +124,11 @@
     for(MHPathModel *pathModel in _pathModelArray) {
         if (pathModel.action & MHPathModelActionUndo) continue;
         
-        if (pathModel.action & MHPathModelActionLine) {
+        if (pathModel.action & MHPathModelActionLine ||
+            pathModel.action & MHPathModelActionStraightLine) {
             [pathModel.color set];
             [pathModel.path stroke];
         }
-//        else if (pathModel.action & MHPathModelActionStraightLine) {
-//
-//        }
 //        else if (pathModel.action & MHPathModelActionCircle) {
 //
 //        }
@@ -159,8 +157,11 @@
 
     if (_currentPath) {
         MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
-        [pathModel.color set];
-        [pathModel.path stroke];
+        if (pathModel.action & MHPathModelActionLine ||
+            pathModel.action & MHPathModelActionStraightLine) {
+            [pathModel.color set];
+            [pathModel.path stroke];
+        }
     }
 }
 
@@ -179,6 +180,12 @@
 {
     CGPoint location = [touches.anyObject locationInView:self];
     
+    if (self.pathModelAction & MHPathModelActionStraightLine) {
+        CGPoint firstPoint = [[self pathPoints] firstObject].CGPointValue;
+        CGPathRelease(_currentPath);
+        _currentPath = CGPathCreateMutable();
+        CGPathMoveToPoint(_currentPath, NULL, firstPoint.x, firstPoint.y);
+    }
     CGPathAddLineToPoint(_currentPath, NULL, location.x, location.y);
     
     [self setNeedsDisplay];
@@ -254,6 +261,43 @@
     [self addPathModelToArray:pathModel];
     
     [self setNeedsDisplay];
+}
+
+void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
+    NSMutableArray *pathPoints = (__bridge NSMutableArray *)info;
+    CGPoint *points = element->points;
+    CGPathElementType type = element->type;
+    
+    switch(type) {
+        case kCGPathElementMoveToPoint: // contains 1 point
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddLineToPoint: // contains 1 point
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            break;
+            
+        case kCGPathElementAddCurveToPoint: // contains 3 points
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[2]]];
+            break;
+            
+        case kCGPathElementCloseSubpath: // contains no point
+            break;
+    }
+}
+
+- (NSArray<NSValue *> *)pathPoints
+{
+    NSMutableArray *points = [NSMutableArray array];
+    CGPathApply(_currentPath, (__bridge void *)(points), MyCGPathApplierFunc);
+    return points;
 }
 
 @end

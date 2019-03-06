@@ -17,15 +17,15 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
     MHPathModelActionRepeat = 1 << 1,
     
     MHPathModelActionLine = 1 << 16,
-//    MHPathModelActionStraightLine = 2 << 16,
-//    MHPathModelActionCircle = 3 << 16,
-//    MHPathModelActionRectangle = 4 << 16,
-//    MHPathModelActionRriangle = 5 << 16,
+    MHPathModelActionStraightLine = 2 << 16,
+    MHPathModelActionCircle = 3 << 16,
+    MHPathModelActionRectangle = 4 << 16,
+    MHPathModelActionPolygon = 5 << 16,
     MHPathModelActionForegroundImage = 6 << 16,
     MHPathModelActionBackgroundImage = 7 << 16,
-//    MHPathModelActionText = 8 << 16,
-//    MHPathModelActionSmear = 9 << 16,
-//    MHPathModelActionMosaic = 10 << 16,
+    MHPathModelActionText = 8 << 16,
+    MHPathModelActionSmear = 9 << 16,
+    MHPathModelActionMosaic = 10 << 16,
 };
 
 @interface MHPathModel : NSObject
