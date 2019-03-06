@@ -29,32 +29,36 @@
                                 <rect key="frame" x="8" y="599" width="359" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qOS-yX-stC">
-                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
                                         <state key="normal" title="color"/>
                                         <connections>
                                             <action selector="onOpenColorViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LIG-lJ-zcs"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PU4-cU-g2W">
-                                        <rect key="frame" x="90" y="0.0" width="89.5" height="30"/>
+                                        <rect key="frame" x="72" y="0.0" width="71.5" height="30"/>
                                         <state key="normal" title="width"/>
                                         <connections>
                                             <action selector="onOpenWidthViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="egc-mD-hSn"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAd-TR-seY">
-                                        <rect key="frame" x="179.5" y="0.0" width="90" height="30"/>
+                                        <rect key="frame" x="143.5" y="0.0" width="72" height="30"/>
                                         <state key="normal" title="fgImg"/>
                                         <connections>
                                             <action selector="onSelectForegroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="loK-hW-1oU"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ST-8m-egk">
-                                        <rect key="frame" x="269.5" y="0.0" width="89.5" height="30"/>
+                                        <rect key="frame" x="215.5" y="0.0" width="71.5" height="30"/>
                                         <state key="normal" title="bgImg"/>
                                         <connections>
                                             <action selector="onSelectBackgroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="K73-YW-EdV"/>
                                         </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cue-7e-02C">
+                                        <rect key="frame" x="287" y="0.0" width="72" height="30"/>
+                                        <state key="normal" title="text"/>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -209,18 +213,79 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="7D9-dk-Wlr">
+                                <rect key="frame" x="8" y="599" width="359" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d98-i4-T1n">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <state key="normal" title="线"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DWF-8U-EZj"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kwx-PV-5UK">
+                                        <rect key="frame" x="46.5" y="0.0" width="31" height="30"/>
+                                        <state key="normal" title="直线"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GzB-yu-YES"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvP-g1-kLS">
+                                        <rect key="frame" x="93.5" y="0.0" width="30" height="30"/>
+                                        <state key="normal" title="圆"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7wl-8Z-icQ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rM5-cR-A9f">
+                                        <rect key="frame" x="140" y="0.0" width="31" height="30"/>
+                                        <state key="normal" title="矩形"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="roF-FE-M3f"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roR-nQ-iFF">
+                                        <rect key="frame" x="187.5" y="0.0" width="62" height="30"/>
+                                        <state key="normal" title="正多边形"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cOn-2n-4sJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="109" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5S-bO-3U4">
+                                        <rect key="frame" x="265.5" y="0.0" width="31" height="30"/>
+                                        <state key="normal" title="涂抹"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1WO-eZ-a8l"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="110" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3WZ-FS-668">
+                                        <rect key="frame" x="313" y="0.0" width="46" height="30"/>
+                                        <state key="normal" title="马赛克"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bCo-FZ-y2b"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1v6-oP-t73">
                                 <rect key="frame" x="8" y="629" width="359" height="30"/>
                                 <subviews>
                                     <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOk-jN-cd0">
-                                        <rect key="frame" x="0.0" y="0.0" width="179.5" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="119.5" height="30"/>
                                         <state key="normal" title="tools"/>
                                         <connections>
                                             <action selector="onToolsViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gVO-dj-OSe"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XbW-uh-L1j">
+                                        <rect key="frame" x="119.5" y="0.0" width="120" height="30"/>
+                                        <state key="normal" title="graph"/>
+                                        <connections>
+                                            <action selector="onToolsViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bz2-EM-UVm"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUl-v8-m1T">
-                                        <rect key="frame" x="179.5" y="0.0" width="179.5" height="30"/>
+                                        <rect key="frame" x="239.5" y="0.0" width="119.5" height="30"/>
                                         <state key="normal" title="clear"/>
                                         <connections>
                                             <action selector="onToolsViewTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mgL-xz-S77"/>
@@ -238,19 +303,23 @@
                             <constraint firstItem="pt3-OP-BdV" firstAttribute="top" secondItem="lP0-y6-SPy" secondAttribute="top" id="4y9-0e-Kbk"/>
                             <constraint firstItem="lP0-y6-SPy" firstAttribute="trailing" secondItem="jSU-ag-sQm" secondAttribute="trailing" id="CmB-g4-v05"/>
                             <constraint firstItem="lP0-y6-SPy" firstAttribute="leading" secondItem="jSU-ag-sQm" secondAttribute="leading" id="D0Y-qk-bZT"/>
+                            <constraint firstItem="7D9-dk-Wlr" firstAttribute="trailing" secondItem="pt3-OP-BdV" secondAttribute="trailing" id="DY3-GV-u85"/>
                             <constraint firstItem="jSU-ag-sQm" firstAttribute="bottom" secondItem="Ghm-Ak-EdV" secondAttribute="bottom" id="EDs-rf-iOb"/>
                             <constraint firstItem="7Eb-a5-5XD" firstAttribute="top" secondItem="1v6-oP-t73" secondAttribute="bottom" constant="8" id="HcA-js-iey"/>
                             <constraint firstItem="pt3-OP-BdV" firstAttribute="bottom" secondItem="lP0-y6-SPy" secondAttribute="bottom" id="LRr-DQ-mwF"/>
                             <constraint firstItem="mdN-gJ-d1f" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="OsM-G8-e5a"/>
                             <constraint firstItem="Ghm-Ak-EdV" firstAttribute="leading" secondItem="1v6-oP-t73" secondAttribute="leading" id="QJy-yc-6sH"/>
+                            <constraint firstItem="7D9-dk-Wlr" firstAttribute="top" secondItem="pt3-OP-BdV" secondAttribute="top" id="Wi3-bu-nCM"/>
                             <constraint firstItem="jSU-ag-sQm" firstAttribute="top" secondItem="Ghm-Ak-EdV" secondAttribute="top" id="XNv-CL-bnG"/>
                             <constraint firstAttribute="trailing" secondItem="mdN-gJ-d1f" secondAttribute="trailing" id="dvT-7W-RxM"/>
+                            <constraint firstItem="7D9-dk-Wlr" firstAttribute="bottom" secondItem="pt3-OP-BdV" secondAttribute="bottom" id="hEx-5i-WuI"/>
                             <constraint firstItem="Ghm-Ak-EdV" firstAttribute="trailing" secondItem="1v6-oP-t73" secondAttribute="trailing" id="id4-Ze-dIU"/>
                             <constraint firstItem="pt3-OP-BdV" firstAttribute="leading" secondItem="lP0-y6-SPy" secondAttribute="leading" id="kFj-sn-MjO"/>
                             <constraint firstItem="lP0-y6-SPy" firstAttribute="top" secondItem="jSU-ag-sQm" secondAttribute="top" id="r5Y-3M-MBK"/>
                             <constraint firstItem="1v6-oP-t73" firstAttribute="top" secondItem="Ghm-Ak-EdV" secondAttribute="bottom" id="rOa-6r-p1I"/>
                             <constraint firstItem="pt3-OP-BdV" firstAttribute="trailing" secondItem="lP0-y6-SPy" secondAttribute="trailing" id="uaD-ZC-Txk"/>
                             <constraint firstAttribute="trailing" secondItem="1v6-oP-t73" secondAttribute="trailing" constant="8" id="v13-JK-CK4"/>
+                            <constraint firstItem="7D9-dk-Wlr" firstAttribute="leading" secondItem="pt3-OP-BdV" secondAttribute="leading" id="ybL-Mx-aXg"/>
                             <constraint firstItem="Ghm-Ak-EdV" firstAttribute="top" secondItem="mdN-gJ-d1f" secondAttribute="bottom" constant="8" id="yc0-wH-guY"/>
                             <constraint firstItem="1v6-oP-t73" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="zJ5-hu-XHq"/>
                         </constraints>
@@ -259,6 +328,7 @@
                         <outlet property="clearView" destination="pt3-OP-BdV" id="R0g-Es-hSg"/>
                         <outlet property="colorsView" destination="lP0-y6-SPy" id="AYz-G0-e2m"/>
                         <outlet property="darwWidthView" destination="jSU-ag-sQm" id="Ryy-VN-MfZ"/>
+                        <outlet property="graphView" destination="7D9-dk-Wlr" id="GLG-fA-01n"/>
                         <outlet property="toolsView" destination="Ghm-Ak-EdV" id="klw-da-HKp"/>
                         <outlet property="whiteboardView" destination="mdN-gJ-d1f" id="RlB-SC-sBo"/>
                     </connections>

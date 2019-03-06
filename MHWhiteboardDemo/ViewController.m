@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIStackView *darwWidthView;
 @property (weak, nonatomic) IBOutlet UIStackView *colorsView;
 @property (weak, nonatomic) IBOutlet UIStackView *clearView;
+@property (weak, nonatomic) IBOutlet UIStackView *graphView;
 
 @end
 
@@ -100,6 +101,33 @@
     }
 }
 
+- (IBAction)onSelectGraphTouchUpInisde:(UIButton *)sender
+{
+    self.whiteboardView.pathModelAction = 1 << (sender.tag - 85);
+    
+    if (sender.tag == 105) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle: @"Login"
+                                                                                  message: @"Input username and password"
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        __weak typeof(self) weakSelf = self;
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"数量";
+            textField.textColor = [UIColor blueColor];
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            textField.text = @(weakSelf.whiteboardView.sides).stringValue;
+        }];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSArray * textfields = alertController.textFields;
+            UITextField *sidesField = textfields[0];
+            if (sidesField.text.length) {
+                weakSelf.whiteboardView.sides = sidesField.text.integerValue;
+            }
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
 - (IBAction)onSelectColorTouchUpInside:(UIButton *)sender
 {
     if (sender.tag == 105) {
@@ -115,8 +143,11 @@
     if (sender.tag == 101) {
         [self showView:self.toolsView];
     }
-    else {
+    else if (sender.tag == 102) {
         [self showView:self.clearView];
+    }
+    else {
+        [self showView:self.graphView];
     }
 }
 
@@ -140,6 +171,7 @@
     self.toolsView.hidden = true;
     self.colorsView.hidden = true;
     self.darwWidthView.hidden = true;
+    self.graphView.hidden = true;
     view.hidden = false;
 }
 
