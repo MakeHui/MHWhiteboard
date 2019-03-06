@@ -17,20 +17,20 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
     MHPathModelActionRepeat = 1 << 1,
     
     MHPathModelActionLine = 1 << 16,
-    MHPathModelActionStraightLine = 2 << 16,
-    MHPathModelActionCircle = 3 << 16,
-    MHPathModelActionRectangle = 4 << 16,
-    MHPathModelActionPolygon = 5 << 16,
-    MHPathModelActionForegroundImage = 6 << 16,
-    MHPathModelActionBackgroundImage = 7 << 16,
-    MHPathModelActionText = 8 << 16,
-    MHPathModelActionSmear = 9 << 16,
-    MHPathModelActionMosaic = 10 << 16,
+    MHPathModelActionStraightLine = 1 << 17,
+    MHPathModelActionCircle = 1 << 18,
+    MHPathModelActionRectangle = 1 << 19,
+    MHPathModelActionPolygon = 1 << 20,
+    MHPathModelActionForegroundImage = 1 << 21,
+    MHPathModelActionBackgroundImage = 1 << 22,
+    MHPathModelActionText = 1 << 23,
+    MHPathModelActionSmear = 1 << 24,
+    MHPathModelActionMosaic = 1 << 25,
 };
 
 @interface MHPathModel : NSObject
 
-+ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color;
++ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color sides:(NSUInteger)sides;
 
 + (instancetype)initWithAction:(MHPathModelAction)action image:(UIImage *)image drawInRect:(CGRect)rect;
 
@@ -48,6 +48,7 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
 @property(assign, nonatomic)MHPathModelAction pathModelAction;
 @property(assign, nonatomic)IBInspectable CGFloat brushWidth;
 @property(strong, nonatomic)IBInspectable UIColor *brushColor;
+@property(assign, nonatomic)IBInspectable NSUInteger sides;
 
 - (void)setForegroundImage:(UIImage *)foregroundImage;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;

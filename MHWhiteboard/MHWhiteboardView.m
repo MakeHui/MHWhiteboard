@@ -54,71 +54,78 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     return sqrt(xDist * xDist + yDist * yDist);
 }
 
-+ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color
++ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color sides:(NSUInteger)sides
 {
     MHPathModel *pathModel = [MHPathModel new];
     
     pathModel.action = action;
     pathModel.color = color;
     
-    switch (action) {
-        case MHPathModelActionLine:
-        {
-            pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
-            pathModel.path.lineWidth = lineWidth;
-            pathModel.path.lineCapStyle = kCGLineCapRound;
-            pathModel.path.lineJoinStyle = kCGLineJoinRound;
+    if (action & MHPathModelActionLine ||
+        action & MHPathModelActionStraightLine) {
+        pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
+        pathModel.path.lineWidth = lineWidth;
+        pathModel.path.lineCapStyle = kCGLineCapRound;
+        pathModel.path.lineJoinStyle = kCGLineJoinRound;
+    }
+    else if (action & MHPathModelActionCircle) {
+        NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
+        
+        CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
+        CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
+        
+        CGPoint arcCenter = CGPointMake((firstPoint.x + lastPoint.x) / 2, (firstPoint.y + lastPoint.y) / 2);
+        CGFloat radius = [MHPathModel distance:firstPoint point:lastPoint] / 2;
+        
+        pathModel.path = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:radius startAngle:0 endAngle:120 clockwise:YES];
+        pathModel.path.lineWidth = lineWidth;
+        pathModel.path.lineCapStyle = kCGLineCapRound;
+        pathModel.path.lineJoinStyle = kCGLineJoinRound;
+    }
+    else if (action & MHPathModelActionRectangle) {
+        NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
+        
+        CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
+        CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
+        
+        pathModel.path = [UIBezierPath bezierPathWithRect:CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y)];
+        pathModel.path.lineWidth = lineWidth;
+        pathModel.path.lineCapStyle = kCGLineCapRound;
+        pathModel.path.lineJoinStyle = kCGLineJoinRound;
+    }
+    else if (action & MHPathModelActionPolygon) {
+        NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
+        
+        CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
+        CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
+        
+        // Code from: https://stackoverflow.com/revisions/24770675/7
+        pathModel.path = [UIBezierPath bezierPath];
+        
+        CGRect rect = CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y);
+        
+        CGFloat theta       = 2.0 * M_PI / sides;
+        CGFloat squareWidth = MAX(rect.size.width, rect.size.height);
+        
+        CGFloat length      = squareWidth - lineWidth;
+        if (sides % 4 != 0) {
+            length = length * cosf(theta / 2.0);
         }
-            break;
-        case MHPathModelActionStraightLine:
-        {
-            pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
-            pathModel.path.lineWidth = lineWidth;
-            pathModel.path.lineCapStyle = kCGLineCapRound;
-            pathModel.path.lineJoinStyle = kCGLineJoinRound;
+        CGFloat sideLength = length * tanf(theta / 2.0);
+        
+        CGPoint point = CGPointMake(rect.origin.x + rect.size.width / 2.0 + sideLength / 2.0, rect.origin.y + rect.size.height / 2.0 + length / 2.0);
+        CGFloat angle = M_PI;
+        [pathModel.path moveToPoint:point];
+        
+        for (NSInteger side = 0; side < sides; side++) {
+            point = CGPointMake(point.x + (sideLength) * cosf(angle), point.y + (sideLength) * sinf(angle));
+            [pathModel.path addLineToPoint:point];
+            angle += theta;
         }
-            break;
-        case MHPathModelActionCircle:
-        {
-            NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
-            
-            CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
-            CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
-            
-            CGPoint arcCenter = CGPointMake((firstPoint.x + lastPoint.x) / 2, (firstPoint.y + lastPoint.y) / 2);
-            CGFloat radius = [MHPathModel distance:firstPoint point:lastPoint] / 2;
-            
-            pathModel.path = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:radius startAngle:0 endAngle:120 clockwise:YES];
-            pathModel.path.lineWidth = lineWidth;
-            pathModel.path.lineCapStyle = kCGLineCapRound;
-            pathModel.path.lineJoinStyle = kCGLineJoinRound;
-        }
-            break;
-        case MHPathModelActionRectangle:
-        {
-            NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
-            
-            CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
-            CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
-            
-            pathModel.path = [UIBezierPath bezierPathWithRect:CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y)];
-            pathModel.path.lineWidth = lineWidth;
-            pathModel.path.lineCapStyle = kCGLineCapRound;
-            pathModel.path.lineJoinStyle = kCGLineJoinRound;
-        }
-            break;
-        case MHPathModelActionForegroundImage:
-        {
-            // pass...
-        }
-            break;
-        case MHPathModelActionBackgroundImage:
-        {
-            // pass...
-        }
-            break;
-        default:
-            break;
+        
+        pathModel.path.lineWidth = lineWidth;
+        pathModel.path.lineCapStyle = kCGLineCapRound;
+        pathModel.path.lineJoinStyle = kCGLineJoinRound;
     }
     
     return pathModel;
@@ -176,6 +183,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     self.pathModelAction = MHPathModelActionLine;
     self.brushWidth = 5.0f;
     self.brushColor = [UIColor redColor];
+    self.sides = 6;
     
     _pathModelArray = [NSMutableArray array];
 }
@@ -207,21 +215,12 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         
         if (pathModel.action & MHPathModelActionLine ||
             pathModel.action & MHPathModelActionStraightLine ||
-            self.pathModelAction & MHPathModelActionCircle ||
-            self.pathModelAction & MHPathModelActionRectangle) {
+            pathModel.action & MHPathModelActionCircle ||
+            pathModel.action & MHPathModelActionRectangle ||
+            pathModel.action & MHPathModelActionPolygon) {
             [pathModel.color set];
             [pathModel.path stroke];
         }
-        else if (pathModel.action & MHPathModelActionCircle) {
-            
-
-        }
-//        else if (pathModel.action & MHPathModelActionRectangle) {
-//
-//        }
-//        else if (pathModel.action & MHPathModelActionRriangle) {
-//
-//        }
         else if (pathModel.action & MHPathModelActionForegroundImage) {
             [pathModel.image drawInRect:self.bounds];
         }
@@ -240,7 +239,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     }
 
     if (_currentPath) {
-        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];;
+        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor sides:self.sides];
         
         [pathModel.color set];
         [pathModel.path stroke];
@@ -264,7 +263,8 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     
     if (self.pathModelAction & MHPathModelActionStraightLine ||
         self.pathModelAction & MHPathModelActionCircle ||
-        self.pathModelAction & MHPathModelActionRectangle) {
+        self.pathModelAction & MHPathModelActionRectangle ||
+        self.pathModelAction & MHPathModelActionPolygon) {
         CGPoint firstPoint = [[MHPathModel pathPointsWithCGPath:_currentPath] firstObject].CGPointValue;
         CGPathRelease(_currentPath);
         _currentPath = CGPathCreateMutable();
@@ -278,7 +278,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
+    MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor sides:self.sides];
     [self addPathModelToArray:pathModel];
     
     CGPathRelease(_currentPath);
