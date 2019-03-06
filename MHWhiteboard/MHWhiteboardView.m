@@ -10,18 +10,86 @@
 
 @implementation MHPathModel
 
+void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
+    NSMutableArray *pathPoints = (__bridge NSMutableArray *)info;
+    CGPoint *points = element->points;
+    CGPathElementType type = element->type;
+    
+    switch(type) {
+        case kCGPathElementMoveToPoint: // contains 1 point
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddLineToPoint: // contains 1 point
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            break;
+            
+        case kCGPathElementAddCurveToPoint: // contains 3 points
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            [pathPoints addObject:[NSValue valueWithCGPoint:points[2]]];
+            break;
+            
+        case kCGPathElementCloseSubpath: // contains no point
+            break;
+    }
+}
+
++ (NSArray<NSValue *> *)pathPointsWithCGPath:(CGPathRef)path
+{
+    NSMutableArray *points = [NSMutableArray array];
+    CGPathApply(path, (__bridge void *)(points), MyCGPathApplierFunc);
+    return points;
+}
+
++ (CGFloat)distance:(CGPoint)point point:(CGPoint)point2
+{
+    CGFloat xDist = point.x - point2.x;
+    CGFloat yDist = point.y - point2.y;
+    return sqrt(xDist * xDist + yDist * yDist);
+}
+
 + (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color
 {
     MHPathModel *pathModel = [MHPathModel new];
     
     pathModel.action = action;
-    pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
-    pathModel.path.lineWidth = lineWidth;
     pathModel.color = color;
     
     switch (action) {
         case MHPathModelActionLine:
         {
+            pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
+            pathModel.path.lineWidth = lineWidth;
+            pathModel.path.lineCapStyle = kCGLineCapRound;
+            pathModel.path.lineJoinStyle = kCGLineJoinRound;
+        }
+            break;
+        case MHPathModelActionStraightLine:
+        {
+            pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
+            pathModel.path.lineWidth = lineWidth;
+            pathModel.path.lineCapStyle = kCGLineCapRound;
+            pathModel.path.lineJoinStyle = kCGLineJoinRound;
+        }
+            break;
+        case MHPathModelActionCircle:
+        {
+            NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
+            
+            CGPoint firstPoint = pathPoints.firstObject.CGPointValue;
+            CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
+            
+            CGPoint arcCenter = CGPointMake((firstPoint.x + lastPoint.x) / 2, (firstPoint.y + lastPoint.y) / 2);
+            CGFloat radius = [MHPathModel distance:firstPoint point:lastPoint] / 2;
+            
+            pathModel.path = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:radius startAngle:0 endAngle:120 clockwise:YES];
+            pathModel.path.lineWidth = lineWidth;
             pathModel.path.lineCapStyle = kCGLineCapRound;
             pathModel.path.lineJoinStyle = kCGLineJoinRound;
         }
@@ -129,9 +197,10 @@
             [pathModel.color set];
             [pathModel.path stroke];
         }
-//        else if (pathModel.action & MHPathModelActionCircle) {
-//
-//        }
+        else if (pathModel.action & MHPathModelActionCircle) {
+            
+
+        }
 //        else if (pathModel.action & MHPathModelActionRectangle) {
 //
 //        }
@@ -156,12 +225,10 @@
     }
 
     if (_currentPath) {
-        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];
-        if (pathModel.action & MHPathModelActionLine ||
-            pathModel.action & MHPathModelActionStraightLine) {
-            [pathModel.color set];
-            [pathModel.path stroke];
-        }
+        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor];;
+        
+        [pathModel.color set];
+        [pathModel.path stroke];
     }
 }
 
@@ -180,12 +247,14 @@
 {
     CGPoint location = [touches.anyObject locationInView:self];
     
-    if (self.pathModelAction & MHPathModelActionStraightLine) {
-        CGPoint firstPoint = [[self pathPoints] firstObject].CGPointValue;
+    if (self.pathModelAction & MHPathModelActionStraightLine ||
+        self.pathModelAction & MHPathModelActionCircle) {
+        CGPoint firstPoint = [[MHPathModel pathPointsWithCGPath:_currentPath] firstObject].CGPointValue;
         CGPathRelease(_currentPath);
         _currentPath = CGPathCreateMutable();
         CGPathMoveToPoint(_currentPath, NULL, firstPoint.x, firstPoint.y);
     }
+    
     CGPathAddLineToPoint(_currentPath, NULL, location.x, location.y);
     
     [self setNeedsDisplay];
@@ -261,43 +330,6 @@
     [self addPathModelToArray:pathModel];
     
     [self setNeedsDisplay];
-}
-
-void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
-    NSMutableArray *pathPoints = (__bridge NSMutableArray *)info;
-    CGPoint *points = element->points;
-    CGPathElementType type = element->type;
-    
-    switch(type) {
-        case kCGPathElementMoveToPoint: // contains 1 point
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-            break;
-            
-        case kCGPathElementAddLineToPoint: // contains 1 point
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-            break;
-            
-        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
-            break;
-            
-        case kCGPathElementAddCurveToPoint: // contains 3 points
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[1]]];
-            [pathPoints addObject:[NSValue valueWithCGPoint:points[2]]];
-            break;
-            
-        case kCGPathElementCloseSubpath: // contains no point
-            break;
-    }
-}
-
-- (NSArray<NSValue *> *)pathPoints
-{
-    NSMutableArray *points = [NSMutableArray array];
-    CGPathApply(_currentPath, (__bridge void *)(points), MyCGPathApplierFunc);
-    return points;
 }
 
 @end
