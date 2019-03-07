@@ -106,8 +106,8 @@
     self.whiteboardView.pathModelAction = 1 << (sender.tag - 85);
     
     if (sender.tag == 105) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle: @"Login"
-                                                                                  message: @"Input username and password"
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle: @"sides"
+                                                                                  message: @"Input sides count"
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         __weak typeof(self) weakSelf = self;
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {

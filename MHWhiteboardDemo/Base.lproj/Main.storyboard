@@ -56,9 +56,12 @@
                                             <action selector="onSelectBackgroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="K73-YW-EdV"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cue-7e-02C">
+                                    <button opaque="NO" tag="108" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cue-7e-02C">
                                         <rect key="frame" x="287" y="0.0" width="72" height="30"/>
                                         <state key="normal" title="text"/>
+                                        <connections>
+                                            <action selector="onSelectGraphTouchUpInisde:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mZL-tP-cOf"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
