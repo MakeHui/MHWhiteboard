@@ -64,9 +64,6 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     if (action & MHPathModelActionLine ||
         action & MHPathModelActionStraightLine) {
         pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
-        pathModel.path.lineWidth = lineWidth;
-        pathModel.path.lineCapStyle = kCGLineCapRound;
-        pathModel.path.lineJoinStyle = kCGLineJoinRound;
     }
     else if (action & MHPathModelActionCircle) {
         NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
@@ -78,9 +75,6 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         CGFloat radius = [MHPathModel distance:firstPoint point:lastPoint] / 2;
         
         pathModel.path = [UIBezierPath bezierPathWithArcCenter:arcCenter radius:radius startAngle:0 endAngle:120 clockwise:YES];
-        pathModel.path.lineWidth = lineWidth;
-        pathModel.path.lineCapStyle = kCGLineCapRound;
-        pathModel.path.lineJoinStyle = kCGLineJoinRound;
     }
     else if (action & MHPathModelActionRectangle) {
         NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
@@ -89,9 +83,6 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         CGPoint lastPoint = pathPoints.lastObject.CGPointValue;
         
         pathModel.path = [UIBezierPath bezierPathWithRect:CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y)];
-        pathModel.path.lineWidth = lineWidth;
-        pathModel.path.lineCapStyle = kCGLineCapRound;
-        pathModel.path.lineJoinStyle = kCGLineJoinRound;
     }
     else if (action & MHPathModelActionPolygon) {
         NSArray<NSValue *> *pathPoints = [self.class pathPointsWithCGPath:path];
@@ -121,11 +112,11 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
             [pathModel.path addLineToPoint:point];
             angle += theta;
         }
-        
-        pathModel.path.lineWidth = lineWidth;
-        pathModel.path.lineCapStyle = kCGLineCapRound;
-        pathModel.path.lineJoinStyle = kCGLineJoinRound;
     }
+    
+    pathModel.path.lineWidth = lineWidth;
+    pathModel.path.lineCapStyle = kCGLineCapRound;
+    pathModel.path.lineJoinStyle = kCGLineJoinRound;
     
     return pathModel;
 }
