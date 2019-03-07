@@ -101,8 +101,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         
         // Code from: https://stackoverflow.com/revisions/24770675/7
         pathModel.path = [UIBezierPath bezierPath];
-        
-        CGRect rect = CGRectMake(firstPoint.x, firstPoint.y, lastPoint.x - firstPoint.x, lastPoint.y - firstPoint.y);
+        CGRect rect = CGRectMake(MIN(firstPoint.x, lastPoint.x), MIN(firstPoint.y, lastPoint.y), fabs(lastPoint.x - firstPoint.x), fabs(lastPoint.y - firstPoint.y));
         
         CGFloat theta       = 2.0 * M_PI / sides;
         CGFloat squareWidth = MAX(rect.size.width, rect.size.height);
