@@ -41,6 +41,9 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
 @property(strong, nonatomic)UIImage *image;
 @property(assign, nonatomic)CGRect drawImageRect;
 
+@property(strong, nonatomic)NSString *text;
+@property(strong, nonatomic)UIFont *font;
+
 @end
 
 @interface MHWhiteboardView : UIView
@@ -48,7 +51,10 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
 @property(assign, nonatomic)MHPathModelAction pathModelAction;
 @property(assign, nonatomic)IBInspectable CGFloat brushWidth;
 @property(strong, nonatomic)IBInspectable UIColor *brushColor;
+
 @property(assign, nonatomic)IBInspectable NSUInteger sides;
+
+@property(strong, nonatomic)IBInspectable UIFont *textFont;
 
 - (void)setForegroundImage:(UIImage *)foregroundImage;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;

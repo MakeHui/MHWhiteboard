@@ -132,6 +132,26 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     return pathModel;
 }
 
++ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path text:(NSString *)text color:(UIColor *)color font:(UIFont *)font
+{
+    MHPathModel *pathModel = [MHPathModel new];
+    
+    pathModel.action = action;
+    pathModel.text = text;
+    pathModel.color = color;
+    pathModel.path = [UIBezierPath bezierPathWithCGPath:path];
+    pathModel.font = font ?: [UIFont systemFontOfSize:24];
+    
+    return pathModel;
+}
+
+@end
+
+@interface MHWhiteboardView ()<UITextFieldDelegate>
+{
+    UITextField *_textField;
+}
+
 @end
 
 @implementation MHWhiteboardView
@@ -174,6 +194,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     self.brushWidth = 5.0f;
     self.brushColor = [UIColor redColor];
     self.sides = 6;
+    self.textFont = [UIFont systemFontOfSize:24];
     
     _pathModelArray = [NSMutableArray array];
 }
@@ -214,12 +235,14 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
         else if (pathModel.action & MHPathModelActionForegroundImage) {
             [pathModel.image drawInRect:self.bounds];
         }
-        else if (pathModel.action & MHPathModelActionBackgroundImage) {
-            // pass..
+        else if (pathModel.action & MHPathModelActionText) {
+            NSDictionary *attributes = @{NSForegroundColorAttributeName: pathModel.color, NSFontAttributeName: pathModel.font};
+            NSAttributedString *text=[[NSAttributedString alloc] initWithString:pathModel.text attributes:attributes];
+            NSArray<NSValue *> *pathPoints = [MHPathModel pathPointsWithCGPath:pathModel.path.CGPath];
+            CGPoint point = pathPoints.firstObject.CGPointValue;
+            
+            [text drawAtPoint:point];
         }
-//        else if (pathModel.action & MHPathModelActionText) {
-//
-//        }
 //        else if (pathModel.action & MHPathModelActionSmear) {
 //
 //        }
@@ -229,6 +252,8 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     }
 
     if (_currentPath) {
+        if (self.pathModelAction & MHPathModelActionText) { return; }
+        
         MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor sides:self.sides];
         
         [pathModel.color set];
@@ -245,10 +270,30 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     _currentPath = CGPathCreateMutable();
     
     CGPathMoveToPoint(_currentPath, NULL, location.x, location.y);
+    
+    if (self.pathModelAction & MHPathModelActionText) {
+        if (_textField) { [_textField removeFromSuperview]; }
+        
+        static const CGFloat rightMargin = 8.0f;
+        static const CGFloat topMargin = 4.0f;
+        static const CGFloat bottomMargin = 4.0f;
+        static const CGFloat innerMargin = 7.0f;
+        
+        CGSize textSize = [[NSAttributedString alloc] initWithString:@"文字-words" attributes: @{NSFontAttributeName: self.textFont}].size;
+        _textField = [[UITextField alloc] initWithFrame:CGRectMake(location.x - innerMargin, location.y - topMargin, self.frame.size.width - location.x - rightMargin, textSize.height + topMargin + bottomMargin)];
+        _textField.borderStyle = UITextBorderStyleRoundedRect;
+        _textField.delegate = self;
+        _textField.font = self.textFont;
+        [_textField becomeFirstResponder];
+        
+        [self addSubview:_textField];
+    }
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    if (self.pathModelAction & MHPathModelActionText) { return; }
+    
     CGPoint location = [touches.anyObject locationInView:self];
     
     if (self.pathModelAction & MHPathModelActionStraightLine ||
@@ -268,6 +313,8 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    if (self.pathModelAction & MHPathModelActionText) { return; }
+    
     MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor sides:self.sides];
     [self addPathModelToArray:pathModel];
     
@@ -275,6 +322,26 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     _currentPath = nil;
     
     [self setNeedsDisplay];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    if (textField.text.length) {
+        MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath text:textField.text color:self.brushColor font:self.textFont];
+        [self addPathModelToArray:pathModel];
+    }
+    
+    CGPathRelease(_currentPath);
+    _currentPath = nil;
+    
+    [textField removeFromSuperview];
+    [self setNeedsDisplay];
+    
+    return true;
 }
 
 #pragma mark - Function
