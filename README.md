@@ -11,7 +11,7 @@ A simple whiteboard library, based on `UIView`. (一个简洁的白板库, 基�
 - [x] polygon (正多边形)
 - [x] foreground image (前景图片)
 - [x] background image (背景图图片)
-- [ ] text (文字)
+- [x] text (文字)
 - [ ] smear (涂抹)
 - [ ] mosaic (马赛克)
 - [x] undo (撤销)
@@ -58,6 +58,20 @@ MHWhiteboardView *whiteboardView = [[MHWhiteboardView alloc] initWithFrame:CGRec
 [whiteboardView repeat]; // 回撤
 [whiteboardView clearBackgroundImage];	// 清除背景图片
 [whiteboardView clearAll];	// 清空白板
+
+// Set current tool
+typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
+    MHPathModelActionLine = 1 << 16,
+    MHPathModelActionStraightLine = 1 << 17,
+    MHPathModelActionCircle = 1 << 18,
+    MHPathModelActionRectangle = 1 << 19,
+    MHPathModelActionPolygon = 1 << 20,
+    MHPathModelActionText = 1 << 21,
+    // MHPathModelActionSmear = 1 << 22,
+    // MHPathModelActionMosaic = 1 << 23,
+};
+
+whiteboardView.pathModelAction = MHPathModelAction;
 ```
 
 ## License
