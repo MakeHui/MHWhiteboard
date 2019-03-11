@@ -148,14 +148,14 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 @end
 
 @interface MHWhiteboardView ()<UITextFieldDelegate>
-{
-    UITextField *_textField;
-}
 
 @end
 
 @implementation MHWhiteboardView
 {
+    UITextField *_textField;
+    UIImageView *_selectedImageView;
+    
     CGMutablePathRef _currentPath;
     NSMutableArray<MHPathModel *> *_pathModelArray;
 }
@@ -197,6 +197,21 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     self.textFont = [UIFont systemFontOfSize:24];
     
     _pathModelArray = [NSMutableArray array];
+    
+    _selectedImageView = ({
+        UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer:)];
+        UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchWithGestureRecognizer:)];
+//        UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationWithGestureRecognizer:)];
+        _selectedImageView = [[UIImageView alloc] init];
+        _selectedImageView.userInteractionEnabled = true;
+        _selectedImageView.layer.borderColor = [UIColor grayColor].CGColor;
+        _selectedImageView.layer.borderWidth = 1.0;
+        [_selectedImageView addGestureRecognizer:panGestureRecognizer];
+        [_selectedImageView addGestureRecognizer:pinchGestureRecognizer];
+//        [_selectedImageView addGestureRecognizer:rotationGestureRecognizer];
+        _selectedImageView;
+    });
+    
 }
 
 - (void)addPathModelToArray:(MHPathModel *)pathModel
@@ -232,8 +247,8 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
             [pathModel.color set];
             [pathModel.path stroke];
         }
-        else if (pathModel.action & MHPathModelActionForegroundImage) {
-            [pathModel.image drawInRect:self.bounds];
+        else if (pathModel.action & MHPathModelActionInsertImage) {
+            [pathModel.image drawInRect:pathModel.drawImageRect];
         }
         else if (pathModel.action & MHPathModelActionText) {
             NSDictionary *attributes = @{NSForegroundColorAttributeName: pathModel.color, NSFontAttributeName: pathModel.font};
@@ -267,6 +282,23 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 {
     CGPoint location = [touches.anyObject locationInView:self];
     
+    if (self.pathModelAction & MHPathModelActionInsertImage) {
+        if (CGRectContainsPoint(_selectedImageView.frame, location)) {
+            return;
+        }
+        for (NSInteger i = _pathModelArray.count - 1; i >= 0; --i) {
+            MHPathModel *pathModel = _pathModelArray[i];
+            if (pathModel.action & MHPathModelActionInsertImage && CGRectContainsPoint(pathModel.drawImageRect, location)) {
+                if (_selectedImageView.image != pathModel.image) {
+                    [_pathModelArray removeObjectAtIndex:i];
+                    [self insertImage:pathModel.image rect:pathModel.drawImageRect];
+                }
+                break;
+            }
+        }
+        return;
+    }
+    
     _currentPath = CGPathCreateMutable();
     
     CGPathMoveToPoint(_currentPath, NULL, location.x, location.y);
@@ -292,6 +324,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    if (self.pathModelAction & MHPathModelActionInsertImage) { return; }
     if (self.pathModelAction & MHPathModelActionText) { return; }
     
     CGPoint location = [touches.anyObject locationInView:self];
@@ -313,6 +346,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    if (self.pathModelAction & MHPathModelActionInsertImage) { return; }
     if (self.pathModelAction & MHPathModelActionText) { return; }
     
     MHPathModel *pathModel = [MHPathModel initWithAction:self.pathModelAction path:_currentPath lineWidth:self.brushWidth color:self.brushColor sides:self.sides];
@@ -322,6 +356,33 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     _currentPath = nil;
     
     [self setNeedsDisplay];
+}
+
+#pragma mark - UIGestureRecognizer
+
+- (void)moveViewWithGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGPoint location = [panGestureRecognizer locationInView:self];
+    if (location.y < 0 || location.y > self.bounds.size.height) {
+        return;
+    }
+    
+    CGPoint translation = [panGestureRecognizer translationInView:self];
+    panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x + translation.x, panGestureRecognizer.view.center.y + translation.y);
+    
+    [panGestureRecognizer setTranslation:CGPointZero inView:self];
+}
+
+- (void)handlePinchWithGestureRecognizer:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+{
+    pinchGestureRecognizer.view.transform = CGAffineTransformScale(pinchGestureRecognizer.view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+    pinchGestureRecognizer.scale = 1.0;
+}
+
+- (void)handleRotationWithGestureRecognizer:(UIRotationGestureRecognizer *)rotationGestureRecognizer
+{
+    rotationGestureRecognizer.view.transform = CGAffineTransformRotate(rotationGestureRecognizer.view.transform, rotationGestureRecognizer.rotation);
+    rotationGestureRecognizer.rotation = 0.0;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -387,22 +448,51 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     [self setNeedsDisplay];
 }
 
-- (void)setForegroundImage:(UIImage *)foregroundImage
+- (void)insertImage:(UIImage *)image rect:(CGRect)rect
 {
-    MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionForegroundImage image:foregroundImage drawInRect:self.bounds];
+    self.pathModelAction = MHPathModelActionInsertImage;
+    [self setInsertImage];
+    _selectedImageView.image = image;
+    _selectedImageView.frame = rect;
+    [self addSubview:_selectedImageView];
+}
+
+- (void)insertImage:(UIImage *)image
+{
+    CGSize size = CGSizeMake(150, image.size.height / image.size.width * 150);
+    CGRect rect = CGRectMake((self.bounds.size.width - 155) / 2, (self.bounds.size.height - size.height) / 2, size.width, size.height);
+    
+    [self insertImage:image rect:rect];
+}
+
+- (void)setInsertImage
+{
+    if (_selectedImageView.image) {
+        MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionInsertImage image:_selectedImageView.image drawInRect:_selectedImageView.frame];
+        [_selectedImageView setImage:nil];
+        [_selectedImageView removeFromSuperview];
+        [self addPathModelToArray:pathModel];
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setBackgroundImage:(UIImage *)image
+{
+    [self clearBackgroundImage];
+    
+    MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionBackgroundImage image:image drawInRect:self.bounds];
     [self addPathModelToArray:pathModel];
     
     [self setNeedsDisplay];
 }
 
-- (void)setBackgroundImage:(UIImage *)backgroundImage
+- (void)setPathModelAction:(MHPathModelAction)pathModelAction
 {
-    [self clearBackgroundImage];
+    if (_pathModelAction & MHPathModelActionInsertImage && !(pathModelAction & MHPathModelActionInsertImage)) {
+        [self setInsertImage];
+    }
     
-    MHPathModel *pathModel = [MHPathModel initWithAction:MHPathModelActionBackgroundImage image:backgroundImage drawInRect:self.bounds];
-    [self addPathModelToArray:pathModel];
-    
-    [self setNeedsDisplay];
+    _pathModelAction = pathModelAction;
 }
 
 @end

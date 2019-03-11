@@ -58,6 +58,7 @@
 
 - (IBAction)onSelectForegroundImageTouchUpInside:(id)sender
 {
+    self.whiteboardView.pathModelAction = MHPathModelActionInsertImage;
     [self presentViewController:_foregroundPicker animated:YES completion:nil];
 }
 
@@ -156,7 +157,7 @@
     UIImage *image = info[UIImagePickerControllerOriginalImage];
 
     if (picker == _foregroundPicker) {
-        [self.whiteboardView setForegroundImage:image];
+        [self.whiteboardView insertImage:image];
     }
     else if (picker == _backgroundPicker) {
         [self.whiteboardView setBackgroundImage:image];

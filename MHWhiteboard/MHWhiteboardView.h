@@ -15,7 +15,7 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
     
     MHPathModelActionUndo = 1 << 0,
     MHPathModelActionRepeat = 1 << 1,
-    MHPathModelActionForegroundImage = 1 << 2,
+    MHPathModelActionInsertImage = 1 << 2,
     MHPathModelActionBackgroundImage = 1 << 3,
     
     MHPathModelActionLine = 1 << 16,
@@ -56,8 +56,8 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
 
 @property(strong, nonatomic)IBInspectable UIFont *textFont;
 
-- (void)setForegroundImage:(UIImage *)foregroundImage;
-- (void)setBackgroundImage:(UIImage *)backgroundImage;
+- (void)insertImage:(UIImage *)image;
+- (void)setBackgroundImage:(UIImage *)image;
 
 - (void)undo;
 - (void)repeat;
