@@ -44,7 +44,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAd-TR-seY">
                                         <rect key="frame" x="143.5" y="0.0" width="72" height="30"/>
-                                        <state key="normal" title="fgImg"/>
+                                        <state key="normal" title="insImg"/>
                                         <connections>
                                             <action selector="onSelectForegroundImageTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="loK-hW-1oU"/>
                                         </connections>

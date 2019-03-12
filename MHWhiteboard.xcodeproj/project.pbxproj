@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7CA0ECD022375A88005A6914 /* MHWhiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */; };
 		7CF4C76821E7366B00890AA5 /* MHWhiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7CF4C77021E736A000890AA5 /* MHWhiteboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CF4C76E21E736A000890AA5 /* MHWhiteboardView.m */; };
 		7CF4C77121E736A000890AA5 /* MHWhiteboardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CF4C76F21E736A000890AA5 /* MHWhiteboardView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MHWhiteboard.bundle; sourceTree = "<group>"; };
 		7CF4C76321E7366B00890AA5 /* MHWhiteboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHWhiteboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHWhiteboard.h; sourceTree = "<group>"; };
 		7CF4C76721E7366B00890AA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +52,7 @@
 		7CF4C76521E7366B00890AA5 /* MHWhiteboard */ = {
 			isa = PBXGroup;
 			children = (
+				7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */,
 				7CF4C76F21E736A000890AA5 /* MHWhiteboardView.h */,
 				7CF4C76E21E736A000890AA5 /* MHWhiteboardView.m */,
 				7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */,
@@ -127,6 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CA0ECD022375A88005A6914 /* MHWhiteboard.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,8 @@
 
 #import "MHWhiteboardView.h"
 
+#define MHGetImage(imageName)  [UIImage imageNamed:[@"Frameworks/MHWhiteboard.framework/MHWhiteboard.bundle" stringByAppendingPathComponent:imageName]]
+
 @implementation MHPathModel
 
 void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
@@ -204,11 +206,18 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
 //        UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationWithGestureRecognizer:)];
         _selectedImageView = [[UIImageView alloc] init];
         _selectedImageView.userInteractionEnabled = true;
-        _selectedImageView.layer.borderColor = [UIColor grayColor].CGColor;
-        _selectedImageView.layer.borderWidth = 1.0;
         [_selectedImageView addGestureRecognizer:panGestureRecognizer];
         [_selectedImageView addGestureRecognizer:pinchGestureRecognizer];
 //        [_selectedImageView addGestureRecognizer:rotationGestureRecognizer];
+        
+        UIImageView *borderView = [[UIImageView alloc] initWithImage:MHGetImage(@"border.png")];
+        borderView.layer.shadowOpacity = 0.5;
+        borderView.layer.shadowColor = [UIColor grayColor].CGColor;
+        borderView.layer.shadowRadius = 3;
+        borderView.layer.shadowOffset = CGSizeMake(1, 1);
+        
+        [_selectedImageView addSubview:borderView];
+        
         _selectedImageView;
     });
     
@@ -454,6 +463,7 @@ void MyCGPathApplierFunc (void *info, const CGPathElement *element) {
     [self setInsertImage];
     _selectedImageView.image = image;
     _selectedImageView.frame = rect;
+    _selectedImageView.subviews[0].frame = _selectedImageView.bounds;
     [self addSubview:_selectedImageView];
 }
 
