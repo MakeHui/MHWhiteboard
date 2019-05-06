@@ -12,8 +12,6 @@ A simple whiteboard library, based on `UIView`. (一个简洁的白板库, 基�
 - [x] foreground image (前景图片)
 - [x] background image (背景图图片)
 - [x] text (文字)
-- [ ] smear (涂抹)
-- [ ] mosaic (马赛克)
 - [x] undo (撤销)
 - [x] repeat (回撤)
 
@@ -41,7 +39,7 @@ To integrate MHWhiteboard into your Xcode project using Carthage, specify it in 
 github "MakeHui/MHWhiteboard"
 ```
 
-Run `carthage update` to build the framework and drag the built `MHWhiteboard.framework` into your Xcode project.
+Run `carthage update` to build the framework and drag the built `MHWhiteboard.xcodeproj` into your Xcode project.
 
 ## Usage
 
