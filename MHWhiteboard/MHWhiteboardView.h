@@ -23,9 +23,7 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
     MHPathModelActionCircle = 1 << 18,
     MHPathModelActionRectangle = 1 << 19,
     MHPathModelActionPolygon = 1 << 20,
-    MHPathModelActionText = 1 << 21,
-    MHPathModelActionSmear = 1 << 22,
-    MHPathModelActionMosaic = 1 << 23,
+    MHPathModelActionText = 1 << 21
 };
 
 @interface MHPathModel : NSObject
