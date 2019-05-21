@@ -116,13 +116,13 @@
             textField.textColor = [UIColor blueColor];
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
             textField.keyboardType = UIKeyboardTypeNumberPad;
-            textField.text = @(weakSelf.whiteboardView.sides).stringValue;
+            textField.text = @(weakSelf.whiteboardView.polygonSides).stringValue;
         }];
         [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSArray * textfields = alertController.textFields;
             UITextField *sidesField = textfields[0];
             if (sidesField.text.length) {
-                weakSelf.whiteboardView.sides = sidesField.text.integerValue;
+                weakSelf.whiteboardView.polygonSides = sidesField.text.integerValue;
             }
         }]];
         [self presentViewController:alertController animated:YES completion:nil];

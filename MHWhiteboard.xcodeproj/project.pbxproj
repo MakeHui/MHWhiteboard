@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C61FE7B2293A8CC00B0F69A /* MHDrawView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C61FE792293A8CC00B0F69A /* MHDrawView.h */; };
+		7C61FE7C2293A8CC00B0F69A /* MHDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C61FE7A2293A8CC00B0F69A /* MHDrawView.m */; };
+		7C61FE832293AA4F00B0F69A /* MHPathModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C61FE822293AA4E00B0F69A /* MHPathModel.m */; };
 		7CA0ECD022375A88005A6914 /* MHWhiteboard.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */; };
 		7CF4C76821E7366B00890AA5 /* MHWhiteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7CF4C77021E736A000890AA5 /* MHWhiteboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CF4C76E21E736A000890AA5 /* MHWhiteboardView.m */; };
@@ -14,6 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7C61FE792293A8CC00B0F69A /* MHDrawView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHDrawView.h; sourceTree = "<group>"; };
+		7C61FE7A2293A8CC00B0F69A /* MHDrawView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MHDrawView.m; sourceTree = "<group>"; };
+		7C61FE812293AA4E00B0F69A /* MHPathModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHPathModel.h; sourceTree = "<group>"; };
+		7C61FE822293AA4E00B0F69A /* MHPathModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MHPathModel.m; sourceTree = "<group>"; };
 		7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MHWhiteboard.bundle; sourceTree = "<group>"; };
 		7CF4C76321E7366B00890AA5 /* MHWhiteboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHWhiteboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHWhiteboard.h; sourceTree = "<group>"; };
@@ -53,6 +60,10 @@
 			isa = PBXGroup;
 			children = (
 				7CA0ECCF22375A88005A6914 /* MHWhiteboard.bundle */,
+				7C61FE812293AA4E00B0F69A /* MHPathModel.h */,
+				7C61FE822293AA4E00B0F69A /* MHPathModel.m */,
+				7C61FE792293A8CC00B0F69A /* MHDrawView.h */,
+				7C61FE7A2293A8CC00B0F69A /* MHDrawView.m */,
 				7CF4C76F21E736A000890AA5 /* MHWhiteboardView.h */,
 				7CF4C76E21E736A000890AA5 /* MHWhiteboardView.m */,
 				7CF4C76621E7366B00890AA5 /* MHWhiteboard.h */,
@@ -70,6 +81,7 @@
 			files = (
 				7CF4C77121E736A000890AA5 /* MHWhiteboardView.h in Headers */,
 				7CF4C76821E7366B00890AA5 /* MHWhiteboard.h in Headers */,
+				7C61FE7B2293A8CC00B0F69A /* MHDrawView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +126,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 7CF4C75921E7366B00890AA5;
 			productRefGroup = 7CF4C76421E7366B00890AA5 /* Products */;
@@ -142,6 +155,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CF4C77021E736A000890AA5 /* MHWhiteboardView.m in Sources */,
+				7C61FE7C2293A8CC00B0F69A /* MHDrawView.m in Sources */,
+				7C61FE832293AA4F00B0F69A /* MHPathModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

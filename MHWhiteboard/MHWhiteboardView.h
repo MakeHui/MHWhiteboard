@@ -26,41 +26,25 @@ typedef NS_OPTIONS(NSUInteger, MHPathModelAction) {
     MHPathModelActionText = 1 << 21
 };
 
-@interface MHPathModel : NSObject
-
-+ (instancetype)initWithAction:(MHPathModelAction)action path:(CGPathRef)path lineWidth:(CGFloat)lineWidth color:(UIColor *)color sides:(NSUInteger)sides;
-
-+ (instancetype)initWithAction:(MHPathModelAction)action image:(UIImage *)image drawInRect:(CGRect)rect;
-
-@property(assign, nonatomic)MHPathModelAction action;
-@property(strong, nonatomic)UIBezierPath *path;
-@property(strong, nonatomic)UIColor *color;
-
-@property(strong, nonatomic)UIImage *image;
-@property(assign, nonatomic)CGRect drawImageRect;
-
-@property(strong, nonatomic)NSString *text;
-@property(strong, nonatomic)UIFont *font;
-
-@end
-
 @interface MHWhiteboardView : UIView
 
-@property(assign, nonatomic)MHPathModelAction pathModelAction;
+@property(assign, nonatomic)IBInspectable MHPathModelAction pathModelAction;
 @property(assign, nonatomic)IBInspectable CGFloat brushWidth;
 @property(strong, nonatomic)IBInspectable UIColor *brushColor;
 
-@property(assign, nonatomic)IBInspectable NSUInteger sides;
+@property(assign, nonatomic)IBInspectable NSUInteger polygonSides;
 
 @property(strong, nonatomic)IBInspectable UIFont *textFont;
 
+@property(assign, nonatomic)IBInspectable UIViewContentMode backgroundImageContentMode;
+
 - (void)insertImage:(UIImage *)image;
 - (void)setBackgroundImage:(UIImage *)image;
+- (void)clearBackgroundImage;
 
 - (void)undo;
 - (void)repeat;
 - (void)clearAll;
-- (void)clearBackgroundImage;
 
 @end
 
